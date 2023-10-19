@@ -56,7 +56,7 @@ export default function Meter({ meter, treshold, sound, isSound }: MeterProps) {
   setInterval(() => {
     let val = getDecibel(meter) + 100;
     setDecibel(val);
-  }, 1000);
+  }, 2000);
 
   return (
     <div>

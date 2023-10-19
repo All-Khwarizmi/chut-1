@@ -9,24 +9,6 @@ interface RecordProps {
   isSound: boolean;
 }
 
-export function RequestPermission({ treshold, sound, isSound }: RecordProps) {
-  const meter = new Tone.Meter();
-
-  const mic = new Tone.UserMedia();
-  mic.open();
-  // connect mic to the meter
-  mic.connect(meter);
-  return (
-    <>
-      <Meter
-        meter={meter}
-        sound={sound}
-        treshold={treshold}
-        isSound={isSound}
-      />
-    </>
-  );
-}
 export function RecordComponent({
   isRecording,
   treshold,
@@ -52,19 +34,44 @@ export function RecordComponent({
             treshold={treshold}
             isSound={isSound}
           />
-          <button onClick={() => setRecording(!recording)}>Stop</button>
+          <button
+            className="w-48 bg-red-500"
+            onClick={() => setRecording(!recording)}
+          >
+            Stop
+          </button>
         </div>
       ) : (
         <div>
           <button
+            className="w-48 bg-green-400"
             onClick={() => {
               setRecording(!recording);
             }}
           >
-            Start
+            Start Recording
           </button>
         </div>
       )}
+    </>
+  );
+}
+
+export function RequestPermission({ treshold, sound, isSound }: RecordProps) {
+  const meter = new Tone.Meter();
+
+  const mic = new Tone.UserMedia();
+  mic.open();
+  // connect mic to the meter
+  mic.connect(meter);
+  return (
+    <>
+      <Meter
+        meter={meter}
+        sound={sound}
+        treshold={treshold}
+        isSound={isSound}
+      />
     </>
   );
 }
@@ -79,20 +86,21 @@ export default function Meter({ meter, treshold, sound, isSound }: MeterProps) {
   const [decibel, setDecibel] = useState(getDecibel(meter) + 100);
   setInterval(() => {
     let val = getDecibel(meter) + 100;
+    console.log(val);
     setDecibel(val);
   }, 2000);
 
   return (
     <div>
-      <h3>
-        <DisplayEmoji
-          decibel={decibel}
-          sound={sound}
-          treshold={treshold}
-          isSound={isSound}
-        />
+      <DisplayEmoji
+        decibel={decibel}
+        sound={sound}
+        treshold={treshold}
+        isSound={isSound}
+      />
+      <p className="py-5 text-lg font-bold">
         Decibel: {decibel == -Infinity ? "..." : decibel}
-      </h3>
+      </p>
     </div>
   );
 }
@@ -111,7 +119,7 @@ function DisplayEmoji({
 }: DisplayEmojiProps) {
   const emoji = getEmojiAndSound(decibel, treshold);
   getSound(decibel, treshold, sound, isSound);
-  return <div className="emoji">{emoji}</div>;
+  return <div className="text-9xl">{emoji}</div>;
 }
 
 function getEmojiAndSound(decibel: number, treshold: number) {

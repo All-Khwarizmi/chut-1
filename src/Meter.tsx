@@ -9,6 +9,24 @@ interface RecordProps {
   isSound: boolean;
 }
 
+export function RequestPermission({ treshold, sound, isSound }: RecordProps) {
+  const meter = new Tone.Meter();
+
+  const mic = new Tone.UserMedia();
+  mic.open();
+  // connect mic to the meter
+  mic.connect(meter);
+  return (
+    <>
+      <Meter
+        meter={meter}
+        sound={sound}
+        treshold={treshold}
+        isSound={isSound}
+      />
+    </>
+  );
+}
 export function RecordComponent({
   isRecording,
   treshold,
@@ -17,19 +35,19 @@ export function RecordComponent({
 }: RecordProps) {
   const [recording, setRecording] = useState<boolean>(isRecording);
 
-  const meter = new Tone.Meter();
+  //   const meter = new Tone.Meter();
 
-  const mic = new Tone.UserMedia();
-  mic.open();
-  // connect mic to the meter
-  mic.connect(meter);
+  //   const mic = new Tone.UserMedia();
+  //   mic.open();
+  //   // connect mic to the meter
+  //   mic.connect(meter);
 
   return (
     <>
       {recording ? (
         <div>
-          <Meter
-            meter={meter}
+          <RequestPermission
+            isRecording={isRecording}
             sound={sound}
             treshold={treshold}
             isSound={isSound}
@@ -38,7 +56,13 @@ export function RecordComponent({
         </div>
       ) : (
         <div>
-          <button onClick={() => setRecording(!recording)}>Start</button>
+          <button
+            onClick={() => {
+              setRecording(!recording);
+            }}
+          >
+            Start
+          </button>
         </div>
       )}
     </>

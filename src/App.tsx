@@ -18,7 +18,7 @@ export function decibelConverter(decibel: number) {
 function App() {
   const [isSound, setIsSound] = useState(false);
   const [treshold, setTreshold] = useState(80);
-  const audio = new Audio("/shhh.mp3");
+  const audio = new Audio("./shhh.mp3");
   return (
     <>
       <h1 className="main-title">Chut</h1>

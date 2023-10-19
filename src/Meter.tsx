@@ -1,6 +1,6 @@
 import { useState } from "react";
 import * as Tone from "tone";
-import { decibelConverter, getDecibel } from "./App";
+import { getDecibel } from "./App";
 
 interface RecordProps {
   isRecording: boolean;
